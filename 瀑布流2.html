@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>瀑布流2</title>
+		<style type="text/css">
+			ul{
+				width: 1100px;
+				margin: 0 auto;
+				list-style-type: none;
+				padding: 0;	
+				position: relative;			
+			}
+			li{
+				width: 200px;
+				position: absolute;
+				text-align: center;
+				font-size: 24px;
+				color: white;
+			}
+		</style>
+	</head>
+	<body>
+		<ul></ul>
+	</body>
+	<script type="text/javascript">
+		var ul=document.getElementsByTagName("ul")[0];
+		var margin=10;
+		var width=200;
+		var i=0;
+		function rand(max,min){
+			var ran=parseInt(Math.random()*(max-min)+min);
+			return ran;
+		}
+		function rgb(){
+			var r=parseInt(Math.random()*256);
+			var g=parseInt(Math.random()*256);
+			var b=parseInt(Math.random()*256);
+			var rgb='rgb('+r+','+g+','+b+')';
+			return rgb;
+		}
+		var cols = 5;
+		var topArr = [];
+		for (var i = 0; i < cols; i++){
+			topArr[i] = 0;
+		}
+		for(var i=0;i<50;i++){
+			var lis=document.createElement("li");
+			var height=rand(300,100);
+			lis.style.backgroundColor=rgb();
+			lis.innerHTML=i+1;
+			lis.style.height=height+"px";
+			var minTop=topArr[0];
+			var minIndex=0;
+			for(var j=0;j<topArr.length;j++){
+				if(minTop>topArr[j]){
+					minTop = topArr[j];
+					 minIndex=j;		
+				}
+			}
+			lis.style.top=topArr[minIndex]+"px";
+			lis.style.left=minIndex*(width+margin)+"px";
+			topArr[minIndex]+=(height+margin)	
+			ul.appendChild(lis)
+		}
+	</script>
+</html>
