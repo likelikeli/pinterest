@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>瀑布流</title>
+		<style type="text/css">
+		.box{
+			width: 1100px;
+			margin: 0 auto;
+			background-color: gray;
+			overflow: hidden;
+			
+		}
+		ul{
+			padding: 0;
+			float: left;
+			list-style-type: none;
+			width:200px ;
+			margin: 10px;
+		}
+		li{
+			margin-bottom: 10px;
+			width: 200px;
+		}
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<ul></ul>
+			<ul></ul>
+			<ul></ul>
+			<ul></ul>
+			<ul></ul>
+		</div>	
+	</body>
+	<script type="text/javascript">
+		var uls=document.getElementsByTagName("ul");
+		// 随机生成li的高度
+		function rand(max,min){
+			var ran=parseInt(Math.random()*(max-min)+min);
+			return ran;
+		}
+		function rgb(){
+			var r=parseInt(Math.random()*256);
+			var g=parseInt(Math.random()*256);
+			var b=parseInt(Math.random()*256);
+			var rgb='rgb('+r+','+g+','+b+')';
+			return rgb;
+		}
+		for(var j=0;j<20;j++){
+			var lis=document.createElement("li");
+			var height=rand(300,100);
+			lis.style.backgroundColor=rgb();
+			lis.innerHTML=j+1;
+			lis.style.height=height+"px";		
+		// 找出ul中高度最小的
+		var minIndex=0;
+		for(var i=0;i<uls.length;i++){
+			if(uls[minIndex].offsetHeight>uls[i].offsetHeight){
+				 minIndex=i;		
+			}		
+		}uls[minIndex].appendChild(lis);
+		console.log(minIndex)	
+	}
+	</script>
+</html>
