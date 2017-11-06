@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>图片版瀑布流</title>
+		<style type="text/css">
+			.box {
+				/*width: 830px;*/
+				border: 1px purple solid;
+				position: relative;
+				margin: 0 auto;
+				
+			}
+			
+			.box img {
+				width: 200px;
+				position: absolute;
+				transition: 1s;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div>
+			<progress min="0" max="100" value="0" id="progress"></progress>
+		</div>
+		<div class="box">
+
+		</div>
+	</body>
+	<script type="text/javascript">
+		var progress = document.getElementById("progress");
+		var box = document.getElementsByClassName('box')[0];
+
+		var count = 0;
+		var arr = ["wk1.png", "bg.png", "cold.png", "wm.png"]
+
+		var imgArr = [];
+		for(var j = 0; j < 16; j++) {
+			var readyImg = new Image();
+			imgArr.push(readyImg);
+			readyImg.src = "img/P_0" + j + ".jpg";
+			readyImg.onload = function() {
+				count++;
+				progress.value = (count / 16) * 100;
+				if(count == 16) {
+					start();
+					window.onresize = function() {
+			start();
+		}
+				}
+			}
+		}
+		var heightArr = [];
+		var isFirst = true;
+
+		function start() {
+			var l = parseInt((window.innerWidth - 16) / 210);
+			//如果窗口宽度发生变化，但是列数没变，就不重新布局
+			if( heightArr.length == l && l!=0){
+				return;
+			}	
+			console.log("重新布局")
+//			if(l==0){
+//				l=1;
+//			}
+//			?如果窗口不足一列,则要保证1列
+			heightArr.length= l == 0 ? 1 : l;
+//			heightArr.length = l;
+			box.style.width = 210 * l + "px";
+			for(var i = 0; i < heightArr.length; i++) {
+				heightArr[i] = 0;
+			}
+			for(var i = 0; i < 16; i++) {
+				var img = imgArr[i]
+				var minIndex = 0;
+				for(var j = 1; j < heightArr.length; j++) {
+					if(heightArr[minIndex] > heightArr[j]) {
+						minIndex = j;
+					}
+				}
+				img.style.left = minIndex * 210 + "px";
+				img.style.top = heightArr[minIndex] + "px";
+				if(isFirst) {
+					box.appendChild(img);
+				}
+				heightArr[minIndex] += (img.offsetHeight + 10);
+			}
+			isFirst = false;
+		}
+		
+	</script>
+
+</html>
